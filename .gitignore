@@ -1,2 +1,4 @@
 .vagrant
+.python-version
+vultr.ini
 *.log

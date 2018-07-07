@@ -1,0 +1,9 @@
+---
+- name: Vultr | Create VM
+  local_action:
+    module: vr_server
+    name: "{{ vultr_hostname }}"
+    os: CentOS 7 x64
+    plan: 1024 MB RAM,25 GB SSD,1.00 TB BW
+    region: Amsterdam
+    state: started
