@@ -4,4 +4,3 @@
   connection: local
   roles:
     - role: vultr/down
-      vultr_hostname: "{{ inventory_hostname }}"

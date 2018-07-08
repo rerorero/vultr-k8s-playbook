@@ -1,0 +1,16 @@
+---
+- name: Create kubespray working dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0777
+  become: yes
+  with_items:
+    - "{{ kubespray_dir }}"
+    - "{{ kubespray_repo_dir }}"
+
+- name: Git clone kubespray
+  git:
+    repo: "{{ kubespray_repo }}"
+    dest: "{{ kubespray_repo_dir }}"
+    version: "{{ kubespray_version }}"

@@ -1,0 +1,5 @@
+---
+kubespray_repo: "https://github.com/kubernetes-incubator/kubespray.git"
+kubespray_version: v2.5.0
+kubespray_dir: /var/lib/k8s
+kubespray_repo_dir: "{{ kubespray_dir }}/kubespray"

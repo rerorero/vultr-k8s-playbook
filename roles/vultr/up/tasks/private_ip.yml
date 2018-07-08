@@ -1,0 +1,18 @@
+---
+# Currently applicable for Ubuntu only
+- name: Vultr up | Get mac address of private network device
+  command: cat /sys/class/net/{{ vultr_private_device }}/address
+  register: private_mac
+- set_fact:
+    vultr_private_mac: "{{ private_mac.stdout }}"
+
+- name: Vultr up | Configure private network
+  template:
+    src: private_nw.yml.j2
+    dest: /etc/netplan/10-{{ vultr_private_device }}.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Vultr up | Apply private network setting
+  raw: netplan apply

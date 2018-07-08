@@ -1,9 +1,9 @@
 ---
-- name: Vultr | Create VM
+- name: Vultr up | Create VM
   local_action:
     module: vr_server
     state: present
-    name: "{{ vultr_hostname }}"
+    name: "{{ inventory_hostname }}"
     os: "{{ vultr_os }}"
     plan: "{{ vultr_plan }}"
     region: "{{ vultr_region }}"
@@ -12,43 +12,38 @@
     ssh_key: "{{ vultr_key }}"
   register: response
 
-- name: Vultr | Setup ssh host
+- name: Vultr up | Setup ssh host
   set_fact:
     ansible_host: "{{ response.vultr_server.v4_main_ip }}"
+    private_ip: "{{ response.vultr_server.internal_ip }}"
     vm_info: "{{ response.vultr_server }}"
 
-- name: Vultr | Wait for ready
+- name: Vultr up | Wait for ready
   local_action:
     module: wait_for
     host: "{{ ansible_host }}"
     port: 22
-    delay: 10
+    delay: 5
 
-  # Initialize tasks when vm created
+  # Run initialize tasks only when vm has created
 - block:
   - debug: msg="{{ vm_info }}"
 
-  - name: Vultr | Install python2
-    raw: apt-get --yes install python python-simplejson
+    # Python is required to continue running tasks.
+  - import_tasks: python.yml
 
-  - name: Vultr | Setup hostname
+  - name: Vultr up | Setup hostname
     raw: hostnamectl set-hostname "{{ inventory_hostname }}"
 
-  - name: Vultr | Get mac address of private network device
-    raw: cat /sys/class/net/{{ vultr_private_device }}/address
-    register: private_mac
-  - set_fact:
-      vultr_private_mac: "{{ private_mac.stdout }}"
-      vultr_private_ip: "{{ vm_info.internal_ip }}"
-
-  - name: Vultr | Configure private network
-    template:
-      src: private_nw.yml.j2
-      dest: /etc/netplan/10-{{ vultr_private_device }}.yaml
+  - name: Vultr up | Put key
+    copy:
+      src: "{{ vultr_key_path }}"
+      dest: /root/.ssh/id_rsa
       owner: root
       group: root
-      mode: 0644
+      mode: 0600
 
-  - name: Vultr | Apply private network setting
-    raw: netplan apply
+  - import_tasks: private_ip.yml
+
   when: response.changed
+

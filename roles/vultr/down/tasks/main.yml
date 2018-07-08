@@ -2,6 +2,6 @@
 - name: Vultr | Destroy VM
   local_action:
     module: vr_server
-    name: "{{ vultr_hostname }}"
+    name: "{{ inventory_hostname }}"
     state: absent
 

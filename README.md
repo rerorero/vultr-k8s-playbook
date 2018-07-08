@@ -1,4 +1,5 @@
-# homeservers
+# vultr-k8s-playbook
+Ansible playbook to create vultr VMs and deploy a kubernetes cluster.
 
 ## Setup
 
@@ -11,21 +12,27 @@ vi ~/.vultr.ini
 key=<Your vultr's API key>
 ```
 
-Generate key pair and register them via [vultr](https://my.vultr.com/sshkeys/).
+Generate RSA key pair and register the public key via [vultr](https://my.vultr.com/sshkeys/).
 ```
 ssh-keygen -f ./vultr.key
-vi group_vars/all.yml # set your key id to vultr_key
+vi inventories # set your key id to vultr_key
 ```
+
+You can modify `inventories` file to customize VMs.
 
 ## Playbooks
 
-Provision
+`site.yml` creates new VM instances.
 ```
 vi inventories # Modify VM props
 ansible-playbook site.yml
 ```
 
-Destroy
+`destroy.yml` deletes VMs.
 ```
 ansible-playbook destroy.yml
+```
+Specify `-l deploy` if you want to remove only deploy server.
+```
+ansible-playbook destroy.yml -l deploy
 ```
