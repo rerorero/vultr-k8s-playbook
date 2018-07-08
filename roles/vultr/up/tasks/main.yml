@@ -26,11 +26,29 @@
 
   # Initialize tasks when vm created
 - block:
+  - debug: msg="{{ vm_info }}"
+
   - name: Vultr | Install python2
     raw: apt-get --yes install python python-simplejson
 
   - name: Vultr | Setup hostname
     raw: hostnamectl set-hostname "{{ inventory_hostname }}"
 
-  - debug: msg="{{ vm_info }}"
+  - name: Vultr | Get mac address of private network device
+    raw: cat /sys/class/net/{{ vultr_private_device }}/address
+    register: private_mac
+  - set_fact:
+      vultr_private_mac: "{{ private_mac.stdout }}"
+      vultr_private_ip: "{{ vm_info.internal_ip }}"
+
+  - name: Vultr | Configure private network
+    template:
+      src: private_nw.yml.j2
+      dest: /etc/netplan/10-{{ vultr_private_device }}.yaml
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Vultr | Apply private network setting
+    raw: netplan apply
   when: response.changed

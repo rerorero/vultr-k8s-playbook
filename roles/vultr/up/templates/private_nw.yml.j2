@@ -1,0 +1,10 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    {{ vultr_private_device }}:
+      match:
+        macaddress: {{ vultr_private_mac }}
+      mtu: 1450
+      dhcp4: no
+      addresses: [{{ vultr_private_ip }}/16]
