@@ -1,4 +1,6 @@
 .vagrant
 .python-version
 vultr.ini
+vultr.key
+vultr.key.pub
 *.log

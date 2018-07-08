@@ -2,8 +2,35 @@
 - name: Vultr | Create VM
   local_action:
     module: vr_server
+    state: present
     name: "{{ vultr_hostname }}"
-    os: CentOS 7 x64
-    plan: 1024 MB RAM,25 GB SSD,1.00 TB BW
-    region: Amsterdam
-    state: started
+    os: "{{ vultr_os }}"
+    plan: "{{ vultr_plan }}"
+    region: "{{ vultr_region }}"
+    auto_backup_enabled: no
+    private_network_enabled: yes
+    ssh_key: "{{ vultr_key }}"
+  register: response
+
+- name: Vultr | Setup ssh host
+  set_fact:
+    ansible_host: "{{ response.vultr_server.v4_main_ip }}"
+    vm_info: "{{ response.vultr_server }}"
+
+- name: Vultr | Wait for ready
+  local_action:
+    module: wait_for
+    host: "{{ ansible_host }}"
+    port: 22
+    delay: 10
+
+  # Initialize tasks when vm created
+- block:
+  - name: Vultr | Install python2
+    raw: apt-get --yes install python python-simplejson
+
+  - name: Vultr | Setup hostname
+    raw: hostnamectl set-hostname "{{ inventory_hostname }}"
+
+  - debug: msg="{{ vm_info }}"
+  when: response.changed

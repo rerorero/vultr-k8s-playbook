@@ -1,0 +1,7 @@
+---
+- hosts: vm
+  gather_facts: no
+  connection: local
+  roles:
+    - role: vultr/down
+      vultr_hostname: "{{ inventory_hostname }}"

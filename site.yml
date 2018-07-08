@@ -1,0 +1,15 @@
+---
+- hosts: vm
+  gather_facts: no
+  roles:
+    - role: vultr/up
+      vultr_hostname: "{{ inventory_hostname }}"
+      vultr_os: "{{ vm_os }}"
+      vultr_plan: "{{ vm_plan }}"
+      vultr_region: "{{ vm_region }}"
+
+- hosts: vm
+  tasks:
+    - command: hostname
+      register: host
+    - debug: msg="{{ host }}"

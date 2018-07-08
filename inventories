@@ -1,1 +1,7 @@
-localhost
+[vm]
+test2
+
+[vm:vars]
+vm_plan="1024 MB RAM,25 GB SSD,1.00 TB BW"
+vm_os="Ubuntu 18.04 x64"
+vm_region="Tokyo"
