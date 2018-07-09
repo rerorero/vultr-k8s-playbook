@@ -35,10 +35,13 @@
   - name: Vultr up | Setup hostname
     raw: hostnamectl set-hostname "{{ inventory_hostname }}"
 
+  - name: Vultr up | gathering facts
+    setup:
+
   - name: Vultr up | Put key
     copy:
       src: "{{ vultr_key_path }}"
-      dest: /root/.ssh/id_rsa
+      dest: "{{ remote_sshkey_file_path }}"
       owner: root
       group: root
       mode: 0600

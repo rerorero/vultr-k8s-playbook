@@ -1,0 +1,18 @@
+# ref. https://github.com/kubernetes-incubator/kubespray/blob/v2.5.0/inventory/sample/hosts.ini
+
+{% for host in groups['k8s-cluster'] %}
+{{ host }} ansible_ssh_host={{ hostvars[host]['private_ip'] }} ansible_ssh_private_key_file={{ remote_sshkey_file_path }}
+{% endfor %}
+
+{% for role in ['kube-master', 'etcd', 'kube-node'] %}
+
+[{{ role }}]
+{% for host in groups[role] %}
+{{ host }}
+
+{% endfor %}
+{% endfor %}
+
+[k8s-cluster:children]
+kube-master
+kube-node

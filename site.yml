@@ -10,4 +10,7 @@
 
 - hosts: deploy
   roles:
+    - pip
+    - setuptools
     - kubespray
+    - run-kubespray

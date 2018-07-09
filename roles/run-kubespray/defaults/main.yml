@@ -1,0 +1,2 @@
+---
+kubespray_log_path: ./ansible.log

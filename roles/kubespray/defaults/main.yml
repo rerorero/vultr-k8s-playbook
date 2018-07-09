@@ -1,5 +1,8 @@
 ---
 kubespray_repo: "https://github.com/kubernetes-incubator/kubespray.git"
+# kube_version: 1.9.5 (see https://github.com/kubernetes-incubator/kubespray/blob/v2.5.0/roles/download/defaults/main.yml#L27)
 kubespray_version: v2.5.0
-kubespray_dir: /var/lib/k8s
-kubespray_repo_dir: "{{ kubespray_dir }}/kubespray"
+
+# group vars
+# set true if your VM memory size is insufficient.
+kubespray_ignore_assert_errors: true

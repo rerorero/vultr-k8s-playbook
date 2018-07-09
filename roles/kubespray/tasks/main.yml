@@ -3,7 +3,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0777
+    mode: 0755
   become: yes
   with_items:
     - "{{ kubespray_dir }}"
@@ -14,3 +14,34 @@
     repo: "{{ kubespray_repo }}"
     dest: "{{ kubespray_repo_dir }}"
     version: "{{ kubespray_version }}"
+
+- name: Create inventory directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+  become: yes
+  with_items:
+    - "{{ kubespray_repo_dir }}/inventory/{{ kubespray_inventory_name }}"
+    - "{{ kubespray_repo_dir }}/inventory/{{ kubespray_inventory_name }}/group_vars"
+
+- name: Put kubespray inventory and template group vars
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ kubespray_repo_dir }}/inventory/{{ kubespray_inventory_name }}/{{ item }}"
+    mode: 0644
+  with_items:
+    - hosts.ini
+    - group_vars/all.yml
+
+- name: Put kubespray group vars
+  copy:
+    src: "{{ item }}"
+    dest: "{{ kubespray_repo_dir }}/inventory/{{ kubespray_inventory_name }}/{{ item }}"
+    mode: 0644
+  with_items:
+    - group_vars/k8s-cluster.yml
+
+- name: Install requirements
+  pip:
+    requirements: "{{ kubespray_repo_dir }}/requirements.txt"

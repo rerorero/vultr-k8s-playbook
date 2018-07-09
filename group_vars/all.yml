@@ -2,3 +2,9 @@
 ansible_user: root
 ansible_ssh_private_key_file: vultr.key
 # ansible_ssh_pass: if necessary
+
+remote_sshkey_file_path: /root/.ssh/id_rsa
+
+kubespray_dir: /var/lib/k8s
+kubespray_repo_dir: "{{ kubespray_dir }}/kubespray"
+kubespray_inventory_name: vultr

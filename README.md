@@ -22,7 +22,7 @@ You can modify `inventories` file to customize VMs.
 
 ## Playbooks
 
-`site.yml` creates new VM instances.
+`site.yml` creates new VM instances and deploy a kubernetes cluster.
 ```
 vi inventories # Modify VM props
 ansible-playbook site.yml

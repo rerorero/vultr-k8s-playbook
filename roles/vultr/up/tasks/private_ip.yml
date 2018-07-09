@@ -6,13 +6,30 @@
 - set_fact:
     vultr_private_mac: "{{ private_mac.stdout }}"
 
-- name: Vultr up | Configure private network
-  template:
-    src: private_nw.yml.j2
-    dest: /etc/netplan/10-{{ vultr_private_device }}.yaml
-    owner: root
-    group: root
-    mode: 0644
+- block:
+  - name: Vultr up | Configure private network (Ubuntu >= 17.0)
+    template:
+      src: ubuntu17/private_nw.yml.j2
+      dest: /etc/netplan/10-{{ vultr_private_device }}.yaml
+      owner: root
+      group: root
+      mode: 0644
 
-- name: Vultr up | Apply private network setting
-  raw: netplan apply
+  - name: Vultr up | Apply private network setting (Ubuntu >= 17.0)
+    command: netplan apply
+  when: "ansible_distribution == 'Ubuntu' and (ansible_distribution_version | float) >= 17.0"
+
+- block:
+  - name: Vultr up | Configure private network (Ubuntu < 17.0)
+    blockinfile:
+      path: /etc/network/interfaces
+      block: |
+        auto {{ vultr_private_device }}
+        iface {{ vultr_private_device }} inet static
+            address {{ private_ip }}
+            netmask 255.255.0.0
+            mtu 1450
+
+  - name: Vultr up | Apply private network setting (Ubuntu < 17.0)
+    command: ifup ens7
+  when: "ansible_distribution == 'Ubuntu' and (ansible_distribution_version | float) < 17.0"

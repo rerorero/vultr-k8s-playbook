@@ -1,0 +1,9 @@
+---
+  # workaround for dependencies problem : https://stackoverflow.com/questions/7446187/no-module-named-pkg-resources
+- name: Renstall python-pkg-resources
+  command: apt-get install --reinstall python-pkg-resources
+  become: yes
+
+- name: Install setuptools
+  pip:
+    name: setuptools

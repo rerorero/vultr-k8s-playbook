@@ -1,0 +1,3 @@
+---
+- name: Run kubespray playbook to create k8s cluster
+  raw: "cd {{ kubespray_repo_dir }} && ANSIBLE_LOG_PATH={{ kubespray_log_path }} ansible-playbook -i inventory/{{ kubespray_inventory_name }}/hosts.ini cluster.yml"
