@@ -32,7 +32,7 @@ ansible-playbook site.yml
 ```
 ansible-playbook destroy.yml
 ```
-Running with `-l deploy` option make playbook run only deploy server.
+With `-l deploy` option it removes only deploy servers.
 ```
 ansible-playbook destroy.yml -l deploy
 ```
