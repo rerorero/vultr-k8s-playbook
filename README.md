@@ -3,13 +3,13 @@ Ansible playbook to create vultr VMs and deploy a kubernetes cluster.
 
 ## Setup
 
-Setup vultr API key.
+Create a `.vultr.ini` file in your home directory to pass the API Key.
 ```
 vi ~/.vultr.ini
 ```
 ```
 [default]
-key=<Your vultr's API key>
+key=<Your API key>
 ```
 
 Generate RSA key pair and register the public key via [vultr](https://my.vultr.com/sshkeys/).
@@ -22,7 +22,7 @@ You can modify `inventories` file to customize VMs.
 
 ## Playbooks
 
-`site.yml` creates new VM instances and deploy a kubernetes cluster.
+`site.yml` creates new VM instances and deploy a kubernetes cluster by running kubespray.
 ```
 vi inventories # Modify VM props
 ansible-playbook site.yml
@@ -32,7 +32,7 @@ ansible-playbook site.yml
 ```
 ansible-playbook destroy.yml
 ```
-Specify `-l deploy` if you want to remove only deploy server.
+Running with `-l deploy` option make playbook run only deploy server.
 ```
 ansible-playbook destroy.yml -l deploy
 ```
