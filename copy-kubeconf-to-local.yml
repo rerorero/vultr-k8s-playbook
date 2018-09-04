@@ -1,0 +1,15 @@
+---
+- hosts: kube-master
+  run_once: yes
+  gather_facts: no
+  vars:
+    dest: "~/.kube/config.vultr"
+  roles:
+    - vultr-facts
+  tasks:
+    - name: copy kube config from a master node to localhost
+      fetch:
+        src: "~/.kube/config"
+        dest: "{{ dest }}"
+        flat: yes
+

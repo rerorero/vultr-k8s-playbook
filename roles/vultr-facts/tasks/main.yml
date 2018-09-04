@@ -1,0 +1,15 @@
+---
+- name: Get ip of inventory_host
+  local_action:
+    module: vr_server
+    name: "{{ inventory_hostname }}"
+  register: response
+
+- name: Setup ssh host
+  set_fact:
+    ansible_host: "{{ response.vultr_server.v4_main_ip }}"
+    private_ip: "{{ response.vultr_server.internal_ip }}"
+    vm_info: "{{ response.vultr_server }}"
+
+- name: Gather facts
+  setup:
