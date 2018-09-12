@@ -36,3 +36,8 @@ With `-l deploy` option it removes only deploy servers.
 ```
 ansible-playbook destroy.yml -l deploy
 ```
+
+`copy-kubeconf-to-local.yml` copies a kubeconf file from the master node to your local machine. Pass `dest` variable to specify the destination file path.
+```
+ansible-playbook copy-kubeconf-to-local.yml -e "dest=~/.kube/config.vultr"
+```
