@@ -2,3 +2,6 @@
 # Currently applicable for Ubuntu only
 - name: Vultr up | Install python2
   raw: apt-get --yes install python python-simplejson
+  register: result
+  until: result is success
+  retries: 5
