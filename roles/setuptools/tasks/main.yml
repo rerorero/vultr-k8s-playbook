@@ -7,3 +7,6 @@
 - name: Install setuptools
   pip:
     name: setuptools
+  register: result
+  until: result is success
+  retries: 5

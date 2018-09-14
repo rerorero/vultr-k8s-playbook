@@ -11,6 +11,9 @@
     private_network_enabled: yes
     ssh_key: "{{ vultr_key }}"
   register: response
+  until: response is success
+  retries: 3
+  delay: 10
 
 - name: Vultr up | Setup ssh host
   set_fact:

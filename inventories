@@ -3,6 +3,7 @@ deploy01        vultr_plan="2048 MB RAM,40 GB SSD,2.00 TB BW"
 k8s-master01    vultr_plan="8192 MB RAM,100 GB SSD,4.00 TB BW"
 k8s-node01      vultr_plan="8192 MB RAM,100 GB SSD,4.00 TB BW"
 k8s-node02      vultr_plan="8192 MB RAM,100 GB SSD,4.00 TB BW"
+k8s-node03      vultr_plan="8192 MB RAM,100 GB SSD,4.00 TB BW"
 
 [vm:vars]
 # Currently supported only for Ubuntu
@@ -23,6 +24,7 @@ k8s-master01
 [kube-node]
 k8s-node01
 k8s-node02
+k8s-node03
 
 [k8s-cluster:children]
 kube-master
